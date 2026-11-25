@@ -39,6 +39,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
+  // OAuth can land on the home page (Supabase falls back to the Site URL).
+  // Send the code on to the callback so the sign-in finishes.
+  if (path === "/" && request.nextUrl.searchParams.has("code")) {
+    const cb = request.nextUrl.clone();
+    cb.pathname = "/auth/callback";
+    return NextResponse.redirect(cb);
+  }
+
   if (!APP_PREFIXES.some((p) => path.startsWith(p))) return NextResponse.next();
 
   // 2. Session refresh and route protection
