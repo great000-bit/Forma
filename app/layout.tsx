@@ -15,7 +15,8 @@ const inter = Inter({
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
-  style: "italic",
+  // Italic for the one accent word on marketing pages; normal for serif portfolio templates.
+  style: ["normal", "italic"],
   variable: "--font-instrument-serif",
   display: "swap",
 });
