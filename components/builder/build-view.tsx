@@ -101,7 +101,16 @@ export function BuildView({ niche, answers, initial, preferredTemplate, initialS
           body: JSON.stringify({ niche, templateId, answers }),
           signal: controller.signal,
         });
-        if (!res.ok || !res.body) throw new Error((await res.json().catch(() => null))?.error ?? "Build failed");
+        if (!res.ok || !res.body) {
+          const text = await res.text().catch(() => "");
+          let message = `Build failed (${res.status})`;
+          try {
+            message = (JSON.parse(text) as { error?: string }).error ?? message;
+          } catch {
+            if (text) message += `: ${text.slice(0, 80)}`;
+          }
+          throw new Error(message);
+        }
 
         for await (const raw of readEvents(res)) {
           const parsed = buildEventSchema.safeParse(raw);
