@@ -20,7 +20,7 @@ export default async function DashboardPage() {
   const rows = (data ?? []) as Row[];
 
   // Views in the last 30 days, per portfolio, with the top source.
-  const since = new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10);
+  const since = daysAgo(30);
   const { data: viewRows } = supabase && rows.length
     ? await supabase.from("page_views").select("portfolio_id, source, views").gte("day", since)
     : { data: null };
@@ -96,4 +96,11 @@ function ViewsLine({ stat }: { stat?: { total: number; bySource: Map<Source, num
       {top ? <> · most from {SOURCE_LABEL[top[0]]}</> : null}
     </p>
   );
+}
+
+/** ISO date (YYYY-MM-DD) for n days ago. */
+function daysAgo(n: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toISOString().slice(0, 10);
 }
