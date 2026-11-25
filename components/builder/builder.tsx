@@ -12,11 +12,18 @@ import { WAITLIST_NICHE_OPTIONS } from "@/lib/niches";
 import type { Portfolio } from "@/lib/portfolio/schema";
 
 type Stage = "niche" | "interview" | "build";
-type Saved = { stage: Stage; niche: string | null; answers: Answer[]; portfolio: Portfolio | null; savedId: string | null };
+type Saved = {
+  stage: Stage;
+  niche: string | null;
+  templateId: string | null;
+  answers: Answer[];
+  portfolio: Portfolio | null;
+  savedId: string | null;
+};
 
 // Until accounts land (Phase 2), progress lives in this browser tab only.
 const KEY = "forma.builder.v1";
-const blank: Saved = { stage: "niche", niche: null, answers: [], portfolio: null, savedId: null };
+const blank: Saved = { stage: "niche", niche: null, templateId: null, answers: [], portfolio: null, savedId: null };
 
 function load(): Saved {
   try {
@@ -29,11 +36,16 @@ function load(): Saved {
 
 const noopSubscribe = () => () => {};
 
-export function Builder() {
+/** `start` comes from "Use this template" in the gallery. */
+export function Builder({ start }: { start?: { niche: string; templateId: string } }) {
   // sessionStorage only exists in the browser; render nothing on the server.
   const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
   const [saved, setSaved] = useState<Saved | null>(null);
-  const loaded = useMemo(() => (mounted ? load() : null), [mounted]);
+  const loaded = useMemo(() => {
+    if (!mounted) return null;
+    const stored = load();
+    return start && stored.stage === "niche" ? { ...stored, niche: start.niche, templateId: start.templateId } : stored;
+  }, [mounted, start]);
   const state = saved ?? loaded;
 
   useEffect(() => {
@@ -96,6 +108,7 @@ export function Builder() {
           niche={state.niche ?? "other"}
           answers={state.answers}
           initial={state.portfolio}
+          preferredTemplate={state.templateId}
           initialSavedId={state.savedId}
           onPortfolio={(portfolio) => patch({ portfolio })}
           onSaved={(savedId) => patch({ savedId })}

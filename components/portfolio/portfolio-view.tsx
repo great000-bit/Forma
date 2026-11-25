@@ -10,7 +10,7 @@ import {
 import { onAccent, safeAccent } from "@/lib/portfolio/accent";
 import type { Portfolio, SectionId } from "@/lib/portfolio/schema";
 import { cn } from "@/lib/utils";
-import { getTemplate, type PresetId } from "@/templates/catalog";
+import { getTemplate, PRESET_CONFIG } from "@/templates/catalog";
 
 /**
  * Renders any portfolio with any template. Server-safe (no hooks), so it is
@@ -33,10 +33,10 @@ export function PortfolioView({
   className?: string;
 }) {
   const template = getTemplate(portfolio.templateId);
-  const preset: PresetId = template.preset;
+  const config = PRESET_CONFIG[template.preset];
   const { sections, layout, theme } = portfolio;
   const accent = safeAccent(theme.accent, theme.mode);
-  const numbered = preset === "dark-editorial";
+  const numbered = config.numbered;
 
   const visible = layout.order.filter((id) => !layout.hidden.includes(id));
   const wrap: SectionWrapper = renderSection ?? ((_, node) => node);
@@ -49,7 +49,7 @@ export function PortfolioView({
         return (
           <ProfileSection
             data={sections.profile}
-            variant={preset === "split" ? "split" : preset === "sidebar" ? "compact" : "left"}
+            variant={config.profile}
           />
         );
       case "about":
@@ -57,7 +57,7 @@ export function PortfolioView({
       case "skills":
         return <SkillsSection data={sections.skills} number={num} />;
       case "projects":
-        return <ProjectsSection data={sections.projects} variant={preset === "index" ? "index" : "cards"} number={num} />;
+        return <ProjectsSection data={sections.projects} variant={config.projects} number={num} />;
       case "experience":
         return <ExperienceSection data={sections.experience} number={num} />;
       case "contact":
@@ -74,7 +74,7 @@ export function PortfolioView({
   );
 
   const body =
-    preset === "sidebar" ? (
+    config.frame === "sidebar" ? (
       <div className="mx-auto grid max-w-page gap-12 px-6 py-12 md:px-8 lg:grid-cols-[320px_1fr] lg:gap-16 lg:px-12 lg:py-24">
         <aside className="lg:sticky lg:top-12 lg:self-start">{visible.includes("profile") ? wrap("profile", section("profile")) : null}</aside>
         <main className="flex flex-col gap-16">
@@ -84,7 +84,7 @@ export function PortfolioView({
         </main>
       </div>
     ) : (
-      <main className={cn("mx-auto flex flex-col gap-16 px-6 py-12 md:gap-24 md:px-8 lg:py-24", preset === "index" ? "max-w-[880px]" : "max-w-page lg:px-12")}>
+      <main className={cn("mx-auto flex flex-col gap-16 px-6 py-12 md:gap-24 md:px-8 lg:py-24", config.width === "narrow" ? "max-w-[880px]" : "max-w-page lg:px-12")}>
         {visible.map((id) => (
           <section key={id} aria-label={id}>{wrap(id, section(id))}</section>
         ))}

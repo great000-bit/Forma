@@ -1,4 +1,6 @@
-import { Eye } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Eye } from "lucide-react";
+import { templateCount } from "@/templates/catalog";
 import { cn } from "@/lib/utils";
 import { RevealGroup, RevealItem } from "@/components/marketing/reveal";
 import { Container, Section, SectionHeader } from "@/components/marketing/section";
@@ -131,6 +133,12 @@ export function Templates() {
             </RevealItem>
           ))}
         </RevealGroup>
+      </Container>
+      <Container className="mt-10 flex justify-center">
+        <Link href="/templates" className="inline-flex h-11 items-center gap-2 rounded-full border border-border-strong px-5 text-label text-text transition-colors hover:bg-bg">
+          Browse all {templateCount()} templates
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Link>
       </Container>
     </Section>
   );

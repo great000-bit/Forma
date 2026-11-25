@@ -38,13 +38,24 @@ export function ProfileSection({
   headingClass,
 }: {
   data: Sections["profile"];
-  variant?: "left" | "split" | "compact";
+  variant?: "left" | "split" | "compact" | "centered";
   headingClass?: string;
 }) {
   const status = data.statusNote || STATUS_LABEL[data.status];
+  const centered = variant === "centered";
   return (
-    <div className={cn("flex flex-col gap-5", variant === "split" && "md:flex-row md:items-center md:justify-between md:gap-12")}>
-      <div className="flex flex-col gap-4">
+    <div
+      className={cn(
+        "flex flex-col gap-5",
+        variant === "split" && "md:flex-row md:items-center md:justify-between md:gap-12",
+        centered && "items-center text-center",
+      )}
+    >
+      {centered && data.avatarUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element -- user-supplied remote URL
+        <img src={data.avatarUrl} alt={`Portrait of ${data.name}`} width={112} height={112} loading="eager" className="size-28 rounded-full object-cover" />
+      ) : null}
+      <div className={cn("flex flex-col gap-4", centered && "items-center")}>
         {status ? (
           <p className="flex items-center gap-2 text-body-sm text-text-soft">
             <span className="size-2 rounded-full bg-success" aria-hidden="true" />
@@ -61,7 +72,7 @@ export function ProfileSection({
         ) : null}
         {data.tagline ? <p className="max-w-prose text-body text-text-soft">{data.tagline}</p> : null}
       </div>
-      {data.avatarUrl ? (
+      {data.avatarUrl && !centered ? (
         // eslint-disable-next-line @next/next/no-img-element -- user-supplied remote URL
         <img
           src={data.avatarUrl}
@@ -146,10 +157,31 @@ export function ProjectsSection({
   number,
 }: {
   data: Sections["projects"];
-  variant?: "cards" | "index";
+  variant?: "cards" | "index" | "gallery" | "feature";
   number?: number;
 }) {
   if (data.items.length === 0) return null;
+
+  if (variant === "gallery") {
+    return (
+      <div>
+        <Caption number={number}>Selected work</Caption>
+        <div className="flex flex-col gap-12 md:gap-16">
+          {data.items.map((p) => (
+            <article key={p.id} className="flex flex-col gap-4">
+              <ProjectImage p={p} className="aspect-[16/10] rounded-card" />
+              <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-8">
+                <h3 className="text-h4">{p.title}</h3>
+                <ProjectMeta p={p} />
+              </div>
+              {p.summary ? <p className="max-w-prose text-body-sm text-text-soft">{p.summary}</p> : null}
+              <ProjectLinks p={p} />
+            </article>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (variant === "index") {
     return (
@@ -178,14 +210,15 @@ export function ProjectsSection({
     <div>
       <Caption number={number}>Selected work</Caption>
       <div className="grid gap-6 sm:grid-cols-2">
-        {data.items.map((p) => (
-          <article key={p.id} className="flex flex-col overflow-hidden rounded-card border border-border bg-surface">
-            {p.imageUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element -- user-supplied remote URL
-              <img src={p.imageUrl} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
-            ) : (
-              <div className="aspect-[4/3] w-full bg-[color-mix(in_srgb,var(--pf-accent)_10%,transparent)]" aria-hidden="true" />
+        {data.items.map((p, i) => (
+          <article
+            key={p.id}
+            className={cn(
+              "flex flex-col overflow-hidden rounded-card border border-border bg-surface",
+              variant === "feature" && i === 0 && "sm:col-span-2 md:grid md:grid-cols-[3fr_2fr]",
             )}
+          >
+            <ProjectImage p={p} className={variant === "feature" && i === 0 ? "aspect-[4/3] md:aspect-auto md:h-full" : "aspect-[4/3]"} />
             <div className="flex flex-1 flex-col gap-2 p-6">
               <ProjectMeta p={p} />
               <h3 className="text-h4">{p.title}</h3>
@@ -204,6 +237,15 @@ export function ProjectsSection({
         ))}
       </div>
     </div>
+  );
+}
+
+function ProjectImage({ p, className }: { p: Project; className?: string }) {
+  return p.imageUrl ? (
+    // eslint-disable-next-line @next/next/no-img-element -- user-supplied remote URL
+    <img src={p.imageUrl} alt="" loading="lazy" className={cn("w-full object-cover", className)} />
+  ) : (
+    <div className={cn("w-full bg-[color-mix(in_srgb,var(--pf-accent)_10%,transparent)]", className)} aria-hidden="true" />
   );
 }
 

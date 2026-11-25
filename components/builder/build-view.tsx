@@ -56,16 +56,20 @@ function Skeleton({ id }: { id: SectionId }) {
   );
 }
 
-export function BuildView({ niche, answers, initial, initialSavedId, onPortfolio, onSaved, onRestart }: {
+export function BuildView({ niche, answers, initial, preferredTemplate, initialSavedId, onPortfolio, onSaved, onRestart }: {
   niche: string;
   answers: Answer[];
   initial: Portfolio | null;
+  preferredTemplate?: string | null;
   initialSavedId: string | null;
   onPortfolio: (p: Portfolio) => void;
   onSaved: (id: string) => void;
   onRestart: () => void;
 }) {
-  const [templateId] = useState(() => initial?.templateId ?? templatesFor(niche)[0]!.id);
+  const [templateId] = useState(() => {
+    const own = templatesFor(niche);
+    return initial?.templateId ?? own.find((t) => t.id === preferredTemplate)?.id ?? own[0]!.id;
+  });
   const [portfolio, setPortfolio] = useState<Portfolio>(() => initial ?? emptyPortfolio(niche, templateId, getTemplate(templateId).theme));
   const [phases, setPhases] = useState<Record<SectionId, Phase>>(() =>
     Object.fromEntries(SECTION_IDS.map((id) => [id, initial ? "done" : "pending"])) as Record<SectionId, Phase>,
