@@ -105,7 +105,7 @@ export function Interview({ niche, answers, onAnswers, onNiche, onDone }: Props)
 
       <AnimatePresence mode="wait">
         <motion.h2
-          key={turn?.next?.question ?? (loading ? "loading" : "empty")}
+          key={loading ? "loading" : (turn?.next?.question ?? "empty")}
           className="text-center text-h2-m md:text-h2"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -113,7 +113,7 @@ export function Interview({ niche, answers, onAnswers, onNiche, onDone }: Props)
           transition={{ duration: 0.4, ease }}
           aria-live="polite"
         >
-          {loading && !turn ? <span className="text-text-muted">Getting your first question…</span> : turn?.next?.question}
+          {loading ? <span className="text-text-muted">{turn ? "Thinking…" : "Getting your first question…"}</span> : turn?.next?.question}
         </motion.h2>
       </AnimatePresence>
 
