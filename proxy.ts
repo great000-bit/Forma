@@ -21,7 +21,9 @@ export async function proxy(request: NextRequest) {
   // 1. Portfolio subdomains
   const root = process.env.PORTFOLIO_ROOT_DOMAIN;
   const host = (request.headers.get("host") ?? "").split(":")[0]!.toLowerCase();
-  if (root && host.endsWith(`.${root}`)) {
+  // API routes (view counts) work the same on every host.
+  const isApi = path.startsWith("/api/");
+  if (!isApi && root && host.endsWith(`.${root}`)) {
     const sub = host.slice(0, -(root.length + 1));
     if (sub && !sub.includes(".") && !RESERVED.has(sub)) {
       const url = request.nextUrl.clone();
@@ -31,7 +33,7 @@ export async function proxy(request: NextRequest) {
   }
 
   // 1b. Custom domains. Anything that isn't one of Forma's own hosts.
-  if (!isAppHost(host, siteConfig.url, root)) {
+  if (!isApi && !isAppHost(host, siteConfig.url, root)) {
     const url = request.nextUrl.clone();
     url.pathname = path === "/" ? `/d/${host}` : `/d/${host}${path}`;
     return NextResponse.rewrite(url);

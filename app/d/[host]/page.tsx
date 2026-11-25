@@ -22,5 +22,5 @@ export default async function PublishedByDomain({ params }: { params: Promise<{ 
   const { host } = await params;
   const found = await load(host);
   if (!found) notFound();
-  return <PublishedPage portfolio={found.portfolio} showBadge={found.showBadge} />;
+  return <PublishedPage id={found.id} portfolio={found.portfolio} showBadge={found.showBadge} />;
 }

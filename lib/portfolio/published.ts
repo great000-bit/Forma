@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/site";
 import { getSupabase } from "@/lib/supabase/server";
 
 /** A published portfolio and the URL it should be shared and indexed under. */
-export type Published = { portfolio: Portfolio; url: string; showBadge: boolean };
+export type Published = { id: string; portfolio: Portfolio; url: string; showBadge: boolean };
 
 type Row = { id: string; data: unknown; slug: string; custom_domain: string | null; domain_status: string | null };
 
@@ -17,7 +17,7 @@ async function toPublished(row: Row | null): Promise<Published | null> {
     row.custom_domain && row.domain_status === "active"
       ? `https://${row.custom_domain}`
       : portfolioUrl(row.slug, siteConfig.url, process.env.PORTFOLIO_ROOT_DOMAIN);
-  return { portfolio: parsed.data, url, showBadge: !(await ownerHasPro(row.id)) };
+  return { id: row.id, portfolio: parsed.data, url, showBadge: !(await ownerHasPro(row.id)) };
 }
 
 /** Pro owners get no badge. Fails safe: show the badge if the check can't run. */

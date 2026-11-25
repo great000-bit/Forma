@@ -111,3 +111,22 @@ describe("slugs", () => {
     expect(portfolioUrl("amara", "https://x.vercel.app/")).toBe("https://x.vercel.app/p/amara");
   });
 });
+
+import { classifySource } from "@/lib/analytics/source";
+
+describe("view sources", () => {
+  it("buckets referrers", () => {
+    expect(classifySource(null)).toBe("direct");
+    expect(classifySource("https://l.facebook.com/x")).toBe("facebook");
+    expect(classifySource("https://www.linkedin.com/feed")).toBe("linkedin");
+    expect(classifySource("https://t.co/abc")).toBe("x");
+    expect(classifySource("https://www.google.com.ng/")).toBe("google");
+    expect(classifySource("https://example.com")).toBe("other");
+    expect(classifySource("not a url")).toBe("direct");
+  });
+
+  it("trusts ?ref= hints for apps that send no referrer", () => {
+    expect(classifySource(null, "whatsapp")).toBe("whatsapp");
+    expect(classifySource(null, "ig")).toBe("instagram");
+  });
+});

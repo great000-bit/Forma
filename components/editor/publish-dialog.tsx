@@ -68,7 +68,7 @@ export function PublishDialog({ id, name, published }: { id: string; name: strin
     window.setTimeout(() => setCopied(false), 2000);
   };
 
-  const whatsapp = live ? `https://wa.me/?text=${encodeURIComponent(`Here's my portfolio: ${live.url}`)}` : "#";
+  const whatsapp = live ? `https://wa.me/?text=${encodeURIComponent(`Here's my portfolio: ${live.url}?ref=whatsapp`)}` : "#";
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>

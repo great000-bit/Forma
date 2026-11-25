@@ -17,5 +17,5 @@ export default async function PublishedBySlug({ params }: { params: Promise<{ sl
   const { slug } = await params;
   const found = await load(slug);
   if (!found) notFound();
-  return <PublishedPage portfolio={found.portfolio} showBadge={found.showBadge} />;
+  return <PublishedPage id={found.id} portfolio={found.portfolio} showBadge={found.showBadge} />;
 }

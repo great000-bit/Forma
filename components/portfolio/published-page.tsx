@@ -1,8 +1,9 @@
 import { PortfolioView } from "@/components/portfolio/portfolio-view";
+import { ViewBeacon } from "@/components/portfolio/view-beacon";
 import type { Portfolio } from "@/lib/portfolio/schema";
 
 /** A live portfolio as visitors see it, with ProfilePage structured data. */
-export function PublishedPage({ portfolio, showBadge = true }: { portfolio: Portfolio; showBadge?: boolean }) {
+export function PublishedPage({ id, portfolio, showBadge = true }: { id?: string; portfolio: Portfolio; showBadge?: boolean }) {
   const { profile, contact } = portfolio.sections;
   const sameAs = contact.links.map((l) => l.href);
   const jsonLd = {
@@ -23,6 +24,7 @@ export function PublishedPage({ portfolio, showBadge = true }: { portfolio: Port
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <div id="main">
         <PortfolioView portfolio={portfolio} showBadge={showBadge} />
+        {id ? <ViewBeacon id={id} /> : null}
       </div>
     </>
   );

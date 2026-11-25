@@ -7,6 +7,7 @@ import { NICHES } from "@/lib/niches";
 import { portfolioSchema } from "@/lib/portfolio/schema";
 import { currentUser, supabaseServer } from "@/lib/supabase/auth-server";
 import { getTemplate } from "@/templates/catalog";
+import { SOURCE_LABEL, type Source } from "@/lib/analytics/source";
 
 type Row = { id: string; niche: string; template_id: string; data: unknown; status: string; slug: string | null; updated_at: string };
 
@@ -17,6 +18,19 @@ export default async function DashboardPage() {
     ? await supabase.from("portfolios").select("id, niche, template_id, data, status, slug, updated_at").order("updated_at", { ascending: false })
     : { data: null, error: null };
   const rows = (data ?? []) as Row[];
+
+  // Views in the last 30 days, per portfolio, with the top source.
+  const since = new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10);
+  const { data: viewRows } = supabase && rows.length
+    ? await supabase.from("page_views").select("portfolio_id, source, views").gte("day", since)
+    : { data: null };
+  const stats = new Map<string, { total: number; bySource: Map<Source, number> }>();
+  for (const v of (viewRows ?? []) as { portfolio_id: string; source: Source; views: number }[]) {
+    const s = stats.get(v.portfolio_id) ?? { total: 0, bySource: new Map() };
+    s.total += v.views;
+    s.bySource.set(v.source, (s.bySource.get(v.source) ?? 0) + v.views);
+    stats.set(v.portfolio_id, s);
+  }
 
   return (
     <div className="flex flex-col gap-8">
@@ -56,6 +70,7 @@ export default async function DashboardPage() {
                 </div>
                 <Badge variant={row.status === "published" ? "success" : "neutral"}>{row.status === "published" ? "Published" : "Draft"}</Badge>
               </div>
+              {row.status === "published" ? <ViewsLine stat={stats.get(row.id)} /> : null}
               <p className="text-caption text-text-muted tabular-nums">
                 Updated {new Date(row.updated_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
               </p>
@@ -69,5 +84,16 @@ export default async function DashboardPage() {
         })}
       </div>
     </div>
+  );
+}
+
+function ViewsLine({ stat }: { stat?: { total: number; bySource: Map<Source, number> } }) {
+  if (!stat || stat.total === 0) return <p className="text-body-sm text-text-soft">No views yet. Share your link to get some.</p>;
+  const top = [...stat.bySource.entries()].sort((a, b) => b[1] - a[1])[0];
+  return (
+    <p className="text-body-sm text-text-soft">
+      <span className="text-text tabular-nums">{stat.total.toLocaleString("en-NG")}</span> {stat.total === 1 ? "view" : "views"} in 30 days
+      {top ? <> · most from {SOURCE_LABEL[top[0]]}</> : null}
+    </p>
   );
 }
