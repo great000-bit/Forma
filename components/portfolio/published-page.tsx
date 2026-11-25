@@ -2,7 +2,7 @@ import { PortfolioView } from "@/components/portfolio/portfolio-view";
 import type { Portfolio } from "@/lib/portfolio/schema";
 
 /** A live portfolio as visitors see it, with ProfilePage structured data. */
-export function PublishedPage({ portfolio }: { portfolio: Portfolio }) {
+export function PublishedPage({ portfolio, showBadge = true }: { portfolio: Portfolio; showBadge?: boolean }) {
   const { profile, contact } = portfolio.sections;
   const sameAs = contact.links.map((l) => l.href);
   const jsonLd = {
@@ -22,8 +22,7 @@ export function PublishedPage({ portfolio }: { portfolio: Portfolio }) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <div id="main">
-        {/* Free plan for everyone until payments land in Phase 9. */}
-        <PortfolioView portfolio={portfolio} showBadge />
+        <PortfolioView portfolio={portfolio} showBadge={showBadge} />
       </div>
     </>
   );

@@ -5,11 +5,11 @@ import { siteConfig } from "@/lib/site";
 import { getSupabase } from "@/lib/supabase/server";
 
 /** A published portfolio and the URL it should be shared and indexed under. */
-export type Published = { portfolio: Portfolio; url: string };
+export type Published = { portfolio: Portfolio; url: string; showBadge: boolean };
 
-type Row = { data: unknown; slug: string; custom_domain: string | null; domain_status: string | null };
+type Row = { id: string; data: unknown; slug: string; custom_domain: string | null; domain_status: string | null };
 
-function toPublished(row: Row | null): Published | null {
+async function toPublished(row: Row | null): Promise<Published | null> {
   if (!row) return null;
   const parsed = portfolioSchema.safeParse(row.data);
   if (!parsed.success) return null;
@@ -17,10 +17,18 @@ function toPublished(row: Row | null): Published | null {
     row.custom_domain && row.domain_status === "active"
       ? `https://${row.custom_domain}`
       : portfolioUrl(row.slug, siteConfig.url, process.env.PORTFOLIO_ROOT_DOMAIN);
-  return { portfolio: parsed.data, url };
+  return { portfolio: parsed.data, url, showBadge: !(await ownerHasPro(row.id)) };
 }
 
-const COLUMNS = "data, slug, custom_domain, domain_status";
+/** Pro owners get no badge. Fails safe: show the badge if the check can't run. */
+async function ownerHasPro(id: string): Promise<boolean> {
+  const supabase = getSupabase();
+  if (!supabase) return false;
+  const { data, error } = await supabase.rpc("portfolio_owner_has_pro", { p_portfolio: id });
+  return !error && data === true;
+}
+
+const COLUMNS = "id, data, slug, custom_domain, domain_status";
 
 export async function publishedBySlug(slug: string): Promise<Published | null> {
   const supabase = getSupabase();

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { hostnameProblem, normalizeHostname } from "@/lib/domains/hostname";
 import { attachDomain, checkDomain, detachDomain } from "@/lib/domains/vercel";
+import { hasProAccess } from "@/lib/billing/entitlements";
 import { supabaseServer } from "@/lib/supabase/auth-server";
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -39,6 +40,9 @@ export async function POST(request: Request, { params }: Ctx) {
   if ("error" in found) return found.error;
   const { supabase, row } = found;
   if (row.status !== "published") return NextResponse.json({ error: "Publish your portfolio first." }, { status: 400 });
+  if (!(await hasProAccess(supabase))) {
+    return NextResponse.json({ error: "Custom domains come with Pro.", upgrade: true }, { status: 402 });
+  }
 
   const parsed = body.safeParse(await request.json().catch(() => null));
   const host = parsed.success ? normalizeHostname(parsed.data.hostname) : null;

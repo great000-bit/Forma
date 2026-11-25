@@ -16,6 +16,7 @@ export function DomainPanel({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
+  const [upgrade, setUpgrade] = useState(false);
 
   const refresh = useCallback(async () => {
     const res = await fetch(`/api/portfolios/${id}/domain`, { cache: "no-store" });
@@ -46,9 +47,12 @@ export function DomainPanel({ id }: { id: string }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ hostname: host }),
     });
-    const json = (await res.json().catch(() => ({}))) as State & { error?: string };
+    const json = (await res.json().catch(() => ({}))) as State & { error?: string; upgrade?: boolean };
     setBusy(false);
-    if (!res.ok) return setError(json.error ?? "Couldn't connect that domain.");
+    if (!res.ok) {
+      setUpgrade(Boolean(json.upgrade));
+      return setError(json.error ?? "Couldn't connect that domain.");
+    }
     setData(json);
   };
 
@@ -88,7 +92,12 @@ export function DomainPanel({ id }: { id: string }) {
           />
           <Button variant="secondary" loading={busy} onClick={() => void connect()}>Connect</Button>
         </div>
-        {error ? <p role="alert" className="text-body-sm text-error">{error}</p> : null}
+        {error ? (
+          <p role="alert" className="text-body-sm text-error">
+            {error}{" "}
+            {upgrade ? <a href="/dashboard/billing" className="text-accent underline">See Pro</a> : null}
+          </p>
+        ) : null}
       </div>
     );
   }

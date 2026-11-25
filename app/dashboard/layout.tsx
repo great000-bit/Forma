@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { LayoutGrid, LayoutTemplate, LogOut, Sparkles } from "lucide-react";
+import { CreditCard, LayoutGrid, LayoutTemplate, LogOut, Sparkles } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { currentUser } from "@/lib/supabase/auth-server";
 
@@ -10,7 +10,8 @@ export const metadata: Metadata = { title: "Dashboard", robots: { index: false, 
 const nav = [
   { href: "/dashboard", label: "Portfolios", icon: LayoutGrid },
   { href: "/builder", label: "New portfolio", icon: Sparkles },
-  { href: "/#templates", label: "Templates", icon: LayoutTemplate },
+  { href: "/templates", label: "Templates", icon: LayoutTemplate },
+  { href: "/dashboard/billing", label: "Plan", icon: CreditCard },
 ];
 
 export default async function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -35,8 +36,9 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
           ))}
         </nav>
         <div className="glass mt-auto rounded-card p-5">
-          <p className="text-label text-text">Free plan</p>
-          <p className="mt-1 text-body-sm text-text-soft">One portfolio and a forma link. Pro arrives at launch.</p>
+          <p className="text-label text-text">Your plan</p>
+          <p className="mt-1 text-body-sm text-text-soft">Custom domain, no badge and unlimited AI edits come with Pro.</p>
+          <Link href="/dashboard/billing" className="mt-3 inline-block text-label text-accent hover:underline">See plans</Link>
         </div>
       </aside>
 
