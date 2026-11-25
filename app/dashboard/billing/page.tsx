@@ -32,7 +32,7 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
 
       {paid && !pro ? (
         <p role="status" className="rounded-control border border-border bg-accent-soft px-4 py-3 text-body-sm text-text">
-          Payment received. Your plan updates in a minute or two. Refresh this page if it doesn't.
+          {"Payment received. Your plan updates in a minute or two. Refresh this page if it doesn't."}
         </p>
       ) : null}
 
