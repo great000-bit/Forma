@@ -57,8 +57,10 @@ export function Interview({ niche, answers, onAnswers, onNiche, onDone }: Props)
   );
 
   useEffect(() => {
-    // Fetch the first (or resumed) question once on mount.
-    void ask(answers);
+    // Fetch the first (or resumed) question once on mount. The timeout keeps
+    // state updates out of the effect body and dedupes Strict Mode's double run.
+    const id = window.setTimeout(() => void ask(answers), 0);
+    return () => window.clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

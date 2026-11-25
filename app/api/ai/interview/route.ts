@@ -33,12 +33,12 @@ export async function POST(request: Request) {
 
   if (answers.length >= MAX_QUESTIONS) return reply({ done: true, next: null, niche: null, source: "fallback" });
 
-  const useFallback = () => {
+  const fallbackReply = () => {
     const next = fallbackNext(topics, answers);
     return reply({ done: next === null, next, niche: null, source: "fallback" });
   };
 
-  if (!aiConfigured()) return useFallback();
+  if (!aiConfigured()) return fallbackReply();
 
   const prompt = interviewPrompt(topics, answers, Boolean(parsed.data.niche));
   const asked = new Set(answers.map((a) => a.question.toLowerCase()));
@@ -57,5 +57,5 @@ export async function POST(request: Request) {
       console.error("[ai/interview]", error instanceof Error ? error.message : error);
     }
   }
-  return useFallback();
+  return fallbackReply();
 }

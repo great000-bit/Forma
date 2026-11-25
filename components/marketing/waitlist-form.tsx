@@ -44,11 +44,9 @@ export function WaitlistForm() {
     niche: `${uid}-niche`,
   } satisfies Record<WaitlistField, string>;
 
-  const refs = {
-    name: useRef<HTMLInputElement>(null),
-    email: useRef<HTMLInputElement>(null),
-    niche: useRef<HTMLSelectElement>(null),
-  };
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const nicheRef = useRef<HTMLSelectElement>(null);
 
   const [values, setValues] = useState<Values>({ name: "", email: "", niche: "" });
   const [errors, setErrors] = useState<Errors>({});
@@ -82,7 +80,7 @@ export function WaitlistForm() {
       }
       setErrors(next);
       const first = FIELDS.find((f) => next[f]);
-      if (first) refs[first].current?.focus();
+      if (first) ({ name: nameRef, email: emailRef, niche: nicheRef })[first].current?.focus();
       return;
     }
 
@@ -152,7 +150,7 @@ export function WaitlistForm() {
           <div>
             <Label htmlFor={ids.name}>Name</Label>
             <Input
-              ref={refs.name}
+              ref={nameRef}
               id={ids.name}
               name="name"
               autoComplete="name"
@@ -170,7 +168,7 @@ export function WaitlistForm() {
           <div>
             <Label htmlFor={ids.email}>Email</Label>
             <Input
-              ref={refs.email}
+              ref={emailRef}
               id={ids.email}
               name="email"
               type="email"
@@ -191,7 +189,7 @@ export function WaitlistForm() {
             <Label htmlFor={ids.niche}>What do you do?</Label>
             <div className="mt-2">
               <Select
-                ref={refs.niche}
+                ref={nicheRef}
                 id={ids.niche}
                 name="niche"
                 value={values.niche}

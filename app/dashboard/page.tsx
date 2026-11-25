@@ -26,7 +26,7 @@ export default async function DashboardPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="text-body-sm text-error">We couldn't load your portfolios. Refresh to try again.</p>
+        <p role="alert" className="text-body-sm text-error">{"We couldn't load your portfolios. Refresh to try again."}</p>
       ) : null}
 
       {rows.length === 0 && !error ? (
