@@ -59,7 +59,7 @@ export function Navbar() {
             <Link href="/login">Sign in</Link>
           </Button>
           <Button asChild size="sm" variant="light" className="hidden sm:inline-flex">
-            <a href="/#waitlist">Join the waitlist</a>
+            <Link href="/#waitlist">Join the waitlist</Link>
           </Button>
 
           <Sheet>
@@ -91,7 +91,7 @@ export function Navbar() {
               <div className="mt-auto flex flex-col gap-3">
                 <SheetClose asChild>
                   <Button asChild size="lg">
-                    <a href="/#waitlist">Join the waitlist</a>
+                    <Link href="/#waitlist">Join the waitlist</Link>
                   </Button>
                 </SheetClose>
                 <Button asChild variant="secondary" size="lg">

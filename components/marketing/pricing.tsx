@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -79,7 +80,7 @@ export function Pricing() {
                   variant={plan.highlighted ? "primary" : "secondary"}
                   className="mt-auto w-full"
                 >
-                  <a href="/#waitlist">Join the waitlist</a>
+                  <Link href="/#waitlist">Join the waitlist</Link>
                 </Button>
               </Card>
             </RevealItem>
