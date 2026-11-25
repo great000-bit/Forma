@@ -11,7 +11,7 @@
 .dark {
   /* Forma app: pure black canvas, electric blue, glass surfaces. */
   --bg: #000000;
-  --surface: rgba(255, 255, 255, 0.04);
+  --surface: rgba(255, 255, 255, 0.03);
   --surface-raised: rgba(12, 14, 24, 0.86);
   --text: #ffffff;
   --text-soft: rgba(255, 255, 255, 0.72);
@@ -34,7 +34,7 @@
   --elev-pop: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 0 1px rgba(47, 107, 255, 0.18),
     0 24px 72px -16px rgba(47, 107, 255, 0.28);
 
-  --skeleton: rgba(255, 255, 255, 0.06);
+  --skeleton: rgba(255, 255, 255, 0.05);
   --skeleton-shine: rgba(255, 255, 255, 0.06);
 
   color-scheme: dark;
@@ -280,7 +280,7 @@
 
   /* Glass card: frosted, thin light edge, deep shadow. */
   .glass {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012));
     border: 1px solid rgba(255, 255, 255, 0.09);
     backdrop-filter: blur(24px) saturate(150%);
     -webkit-backdrop-filter: blur(24px) saturate(150%);

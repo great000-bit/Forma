@@ -88,6 +88,6 @@ export function samplePortfolio(niche: string, templateId: string): Portfolio {
       },
     },
     layout: {},
-    theme: { accent: "#5B4DFF", mode: "light", font: "sans", ...template.theme },
+    theme: { accent: "#2F6BFF", mode: "light", font: "sans", ...template.theme },
   });
 }
