@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_SITE_URL: https://forma.app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        run: npm install --no-audit --no-fund
+      - name: Type check
+        run: npx next typegen && npm run typecheck
+        continue-on-error: true
+        id: types
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true
+        id: lint
+      - name: Test
+        run: npm run test
+        continue-on-error: true
+        id: test
+      - name: Build
+        run: npm run build
+      - name: Fail if any check failed
+        if: steps.types.outcome == 'failure' || steps.lint.outcome == 'failure' || steps.test.outcome == 'failure'
+        run: |
+          echo "types=${{ steps.types.outcome }} lint=${{ steps.lint.outcome }} test=${{ steps.test.outcome }}"
+          exit 1
