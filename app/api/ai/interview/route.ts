@@ -6,6 +6,7 @@ import {
   type InterviewResponse,
 } from "@/lib/ai/contracts";
 import { fallbackNext } from "@/lib/ai/interview-fallback";
+import { detectNiche } from "@/lib/ai/detect-niche";
 import { interviewPrompt } from "@/lib/ai/prompts";
 import { NICHES, type NicheSlug } from "@/lib/niches";
 import { interviewTopics } from "@/lib/portfolio/niche-config";
@@ -24,7 +25,9 @@ export async function POST(request: Request) {
   if (!parsed.success) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
 
   const { answers } = parsed.data;
-  const niche = (parsed.data.niche ?? "other") as NicheSlug | "other";
+  // Work out the field from the first answer when it wasn't picked. Instant.
+  const guessed = !parsed.data.niche && answers[0] && !answers[0].skipped ? detectNiche(answers[0].answer) : null;
+  const niche = (parsed.data.niche ?? guessed ?? "other") as NicheSlug | "other";
   const topics = interviewTopics(niche);
   const total = Math.max(topics.length, answers.length + 1);
 
@@ -35,11 +38,14 @@ export async function POST(request: Request) {
 
   const fallbackReply = () => {
     const next = fallbackNext(topics, answers);
-    return reply({ done: next === null, next, niche: null, source: "fallback" });
+    return reply({ done: next === null, next, niche: guessed, source: "fallback" });
   };
 
   // The opener is fixed, so the first question shows instantly.
-  if (!aiConfigured() || answers.length === 0) return fallbackReply();
+  // Questions come from a fixed per-field script so every step is instant.
+  // AI is saved for the build, where it matters. Set AI_INTERVIEW=1 to bring
+  // back AI follow-up questions.
+  if (!aiConfigured() || process.env.AI_INTERVIEW !== "1" || answers.length === 0) return fallbackReply();
 
   const prompt = interviewPrompt(topics, answers, Boolean(parsed.data.niche));
   const asked = new Set(answers.map((a) => a.question.toLowerCase()));

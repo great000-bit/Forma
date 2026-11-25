@@ -1,3 +1,4 @@
+import { detectNiche } from "@/lib/ai/detect-niche";
 import { describe, expect, it } from "vitest";
 import { contrastRatio, safeAccent } from "@/lib/portfolio/accent";
 import { applyOps, OpError } from "@/lib/portfolio/ops";
@@ -128,5 +129,15 @@ describe("view sources", () => {
   it("trusts ?ref= hints for apps that send no referrer", () => {
     expect(classifySource(null, "whatsapp")).toBe("whatsapp");
     expect(classifySource(null, "ig")).toBe("instagram");
+  });
+});
+
+
+describe("detectNiche", () => {
+  it("finds the field from a first answer", () => {
+    expect(detectNiche("I'm Tobi, a UI/UX designer in Lagos")).toBe("ui-ux-design");
+    expect(detectNiche("I am a data analyst using Power BI")).toBe("data-analysis");
+    expect(detectNiche("Full stack developer in Abuja")).toBe("web-development");
+    expect(detectNiche("I bake cakes")).toBeNull();
   });
 });

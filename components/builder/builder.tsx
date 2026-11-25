@@ -27,7 +27,7 @@ const blank: Saved = { stage: "niche", niche: null, templateId: null, answers: [
 
 function load(): Saved {
   try {
-    const raw = sessionStorage.getItem(KEY);
+    const raw = localStorage.getItem(KEY);
     return raw ? { ...blank, ...(JSON.parse(raw) as Saved) } : blank;
   } catch {
     return blank;
@@ -38,7 +38,7 @@ const noopSubscribe = () => () => {};
 
 /** `start` comes from "Use this template" in the gallery. */
 export function Builder({ start }: { start?: { niche: string; templateId: string } }) {
-  // sessionStorage only exists in the browser; render nothing on the server.
+  // localStorage only exists in the browser; render nothing on the server.
   const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
   const [saved, setSaved] = useState<Saved | null>(null);
   const loaded = useMemo(() => {
@@ -51,7 +51,7 @@ export function Builder({ start }: { start?: { niche: string; templateId: string
   useEffect(() => {
     if (!saved) return;
     try {
-      sessionStorage.setItem(KEY, JSON.stringify(saved));
+      localStorage.setItem(KEY, JSON.stringify(saved));
     } catch {
       // Private mode or full storage: keep going in memory.
     }
@@ -60,7 +60,7 @@ export function Builder({ start }: { start?: { niche: string; templateId: string
   const patch = useCallback((p: Partial<Saved>) => setSaved((s) => ({ ...(s ?? loaded ?? blank), ...p })), [loaded]);
   const restart = () => {
     try {
-      sessionStorage.removeItem(KEY);
+      localStorage.removeItem(KEY);
     } catch {
       // Nothing stored.
     }
