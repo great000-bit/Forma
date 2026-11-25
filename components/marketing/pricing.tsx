@@ -54,7 +54,7 @@ export function Pricing() {
               <Card
                 className={cn(
                   "flex h-full flex-col",
-                  plan.highlighted && "border-accent ring-1 ring-accent",
+                  plan.highlighted && "glow-edge border-transparent",
                 )}
               >
                 <div className="flex items-center justify-between gap-4">
@@ -79,7 +79,7 @@ export function Pricing() {
                   variant={plan.highlighted ? "primary" : "secondary"}
                   className="mt-auto w-full"
                 >
-                  <a href="#waitlist">Join the waitlist</a>
+                  <a href="/#waitlist">Join the waitlist</a>
                 </Button>
               </Card>
             </RevealItem>

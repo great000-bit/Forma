@@ -75,8 +75,8 @@ export function PublishDialog({ id, name, published }: { id: string; name: strin
         <Button>{live ? "Share" : "Publish"}</Button>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-ink/40 backdrop-blur-sm data-[state=open]:animate-fade-in" />
-        <Dialog.Content className="fixed top-1/2 left-1/2 z-50 w-[calc(100%-32px)] max-w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-dialog bg-surface-raised p-8 shadow-pop data-[state=open]:animate-fade-in">
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-fade-in" />
+        <Dialog.Content className="fixed top-1/2 left-1/2 z-50 w-[calc(100%-32px)] max-w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-dialog border border-border bg-surface-raised backdrop-blur-2xl p-8 shadow-pop data-[state=open]:animate-fade-in">
           <Dialog.Close className="absolute top-5 right-5 inline-flex size-11 items-center justify-center rounded-control text-text-muted hover:bg-accent-soft hover:text-text" aria-label="Close">
             <X className="size-5" aria-hidden="true" />
           </Dialog.Close>

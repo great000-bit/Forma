@@ -7,7 +7,7 @@ import { fieldBase } from "@/components/ui/input";
 function Select({ className, children, ...props }: React.ComponentProps<"select">) {
   return (
     <div className="relative">
-      <select className={cn(fieldBase, "cursor-pointer appearance-none pr-11", className)} {...props}>
+      <select className={cn(fieldBase, "cursor-pointer appearance-none pr-11 [&_option]:bg-black [&_option]:text-white", className)} {...props}>
         {children}
       </select>
       <ChevronDown

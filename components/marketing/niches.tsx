@@ -19,9 +19,9 @@ export function Niches() {
               return (
                 <li
                   key={niche.slug}
-                  className="inline-flex h-11 items-center gap-2 rounded-full border border-border bg-surface px-4 text-body-sm text-text-soft transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong hover:shadow-card"
+                  className="inline-flex h-11 items-center gap-2 rounded-full border border-border bg-white/[0.03] px-4 text-body-sm text-text-soft backdrop-blur-xl transition-[transform,box-shadow,border-color,color] duration-300 ease-out hover:-translate-y-0.5 hover:border-accent/50 hover:text-text hover:shadow-[0_0_24px_-4px_rgba(47,107,255,0.5)]"
                 >
-                  <Icon className="size-4 text-text-muted" strokeWidth={1.5} aria-hidden="true" />
+                  <Icon className="size-4 text-[#8fb0ff]" strokeWidth={1.5} aria-hidden="true" />
                   {niche.label}
                 </li>
               );

@@ -52,7 +52,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Pr
             <li key={t.id}>
               <Link
                 href={`/templates/${niche.slug}/${slug}`}
-                className="group block overflow-hidden rounded-card border border-border bg-surface shadow-card transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong hover:shadow-pop"
+                className="glass group block overflow-hidden rounded-card transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-pop"
               >
                 <MiniPreview niche={niche.slug} templateId={t.id} />
                 <div className="flex flex-col gap-1 border-t border-border px-5 py-4">

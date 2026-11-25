@@ -5,9 +5,9 @@ import { WaitlistForm } from "@/components/marketing/waitlist-form";
 
 export function FinalCta() {
   return (
-    <Section id="waitlist" aria-labelledby="waitlist-title" className="relative">
+    <Section id="waitlist" aria-labelledby="waitlist-title" className="relative overflow-hidden">
       <div
-        className="signal-glow pointer-events-none absolute inset-x-0 top-0 h-[560px]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[640px] bg-[radial-gradient(ellipse_60%_60%_at_50%_100%,rgba(47,107,255,0.35),transparent_70%)]"
         aria-hidden="true"
       />
       <Container className="relative">
@@ -19,8 +19,8 @@ export function FinalCta() {
             Join the waitlist. We&apos;ll let you in before the public launch.
           </p>
         </Reveal>
-        <Reveal className="mx-auto mt-12 max-w-[520px]">
-          <Card>
+        <Reveal className="mx-auto mt-12 max-w-[560px]">
+          <Card className="glow-edge border-transparent bg-[rgba(8,14,36,0.6)]">
             <WaitlistForm />
           </Card>
         </Reveal>

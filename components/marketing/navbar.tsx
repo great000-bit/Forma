@@ -13,7 +13,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { siteConfig } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/marketing/section";
@@ -31,8 +30,8 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 h-18 border-b bg-bg/80 backdrop-blur-[12px] transition-colors duration-200 ease-out",
-        scrolled ? "border-border" : "border-transparent",
+        "sticky top-0 z-40 h-16 border-b transition-[background-color,border-color] duration-300 ease-out md:h-18",
+        scrolled ? "border-border bg-black/70 backdrop-blur-2xl" : "border-transparent bg-transparent",
       )}
     >
       <Container className="flex h-full items-center justify-between gap-6">
@@ -41,27 +40,26 @@ export function Navbar() {
         </Link>
 
         <nav aria-label="Main" className="hidden md:block">
-          <ul className="flex items-center gap-8">
+          <ul className="flex items-center gap-1">
             {siteConfig.nav.map((item) => (
               <li key={item.href}>
-                <a
+                <Link
                   href={item.href}
-                  className="rounded-chip text-body-sm text-text-soft transition-colors duration-150 ease-out hover:text-text"
+                  className="inline-flex h-9 items-center rounded-full px-4 text-body-sm text-text-soft transition-colors duration-200 ease-out hover:bg-white/[0.06] hover:text-text"
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
 
         <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <Button asChild variant="ghost" className="hidden sm:inline-flex">
+          <Button asChild size="sm" variant="ghost" className="hidden sm:inline-flex">
             <Link href="/login">Sign in</Link>
           </Button>
-          <Button asChild className="hidden sm:inline-flex">
-            <a href="#waitlist">Join the waitlist</a>
+          <Button asChild size="sm" variant="light" className="hidden sm:inline-flex">
+            <a href="/#waitlist">Join the waitlist</a>
           </Button>
 
           <Sheet>
@@ -79,12 +77,12 @@ export function Navbar() {
                   {siteConfig.nav.map((item) => (
                     <li key={item.href}>
                       <SheetClose asChild>
-                        <a
+                        <Link
                           href={item.href}
                           className="flex h-12 items-center rounded-control text-body-lg text-text"
                         >
                           {item.label}
-                        </a>
+                        </Link>
                       </SheetClose>
                     </li>
                   ))}
@@ -93,7 +91,7 @@ export function Navbar() {
               <div className="mt-auto flex flex-col gap-3">
                 <SheetClose asChild>
                   <Button asChild size="lg">
-                    <a href="#waitlist">Join the waitlist</a>
+                    <a href="/#waitlist">Join the waitlist</a>
                   </Button>
                 </SheetClose>
                 <Button asChild variant="secondary" size="lg">

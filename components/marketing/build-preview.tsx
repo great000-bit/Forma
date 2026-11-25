@@ -275,7 +275,7 @@ function Portfolio({
         <Caption>Selected work</Caption>
         <div className="grid gap-4 sm:grid-cols-2">
           {SAMPLE.projects.map((project, i) => (
-            <div key={project.title} className="overflow-hidden rounded-[14px] border border-border bg-bg">
+            <div key={project.title} className="overflow-hidden rounded-[14px] border border-border bg-white/[0.03]">
               <div className="relative h-28 bg-accent-soft">
                 <div
                   className={cn(
@@ -435,8 +435,8 @@ export function BuildPreview({
   };
 
   const frame = (
-    <div className="overflow-hidden rounded-card border border-border bg-surface shadow-pop">
-      <div className="flex h-11 items-center gap-2 border-b border-border bg-bg px-4">
+    <div className="glass overflow-hidden rounded-card">
+      <div className="flex h-11 items-center gap-2 border-b border-border bg-black/40 px-4">
         <span className="size-2.5 rounded-full bg-border-strong" />
         <span className="size-2.5 rounded-full bg-border-strong" />
         <span className="size-2.5 rounded-full bg-border-strong" />
@@ -446,7 +446,7 @@ export function BuildPreview({
         <span className="w-12" />
       </div>
       <ProgressLine progress={progress} className="bg-transparent" />
-      <div ref={viewportRef} className="relative h-[440px] overflow-hidden sm:h-[520px]">
+      <div ref={viewportRef} className="relative h-[440px] overflow-hidden bg-black/70 sm:h-[520px]">
         <motion.div
           key={run}
           ref={contentRef}
@@ -458,11 +458,11 @@ export function BuildPreview({
         >
           <Portfolio step={step} sectionRef={sectionRef} />
         </motion.div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-surface to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-black to-transparent" />
 
         {variant === "compact" ? (
           <div className="absolute inset-x-0 bottom-5 flex justify-center px-4">
-            <div className="inline-flex h-11 max-w-full items-center gap-3 rounded-full border border-border bg-surface-raised px-4 shadow-pop">
+            <div className="glow-edge inline-flex h-11 max-w-full items-center gap-3 rounded-full bg-[rgba(10,16,40,0.85)] px-4 backdrop-blur-xl">
               {done ? (
                 <span className="flex size-5 items-center justify-center rounded-full bg-accent text-accent-text">
                   <Check className="size-3" strokeWidth={2.5} />
@@ -489,7 +489,7 @@ export function BuildPreview({
         ) : (
           <div className="grid gap-4 lg:grid-cols-[380px_minmax(0,1fr)] lg:gap-6">
             {/* AI panel, desktop */}
-            <div className="relative hidden flex-col overflow-hidden rounded-card border border-border bg-surface p-8 shadow-card lg:flex">
+            <div className="glass relative hidden flex-col overflow-hidden rounded-card p-8 lg:flex">
               <ProgressLine progress={progress} className="absolute inset-x-0 top-0" />
               <div className="flex items-center gap-3">
                 <LogoMark key={run} animated />
@@ -546,7 +546,7 @@ export function BuildPreview({
                 ) : null}
               </AnimatePresence>
 
-              <div className="mt-auto flex h-12 items-center gap-3 rounded-control border border-border bg-bg pr-1.5 pl-4 text-body-sm text-text-muted">
+              <div className="glow-edge mt-auto flex h-12 items-center gap-3 rounded-full bg-[rgba(10,16,40,0.7)] pr-1.5 pl-4 text-body-sm text-text-muted">
                 <span className="flex-1 truncate">Tell Forma what to change</span>
                 <span className="flex size-9 items-center justify-center rounded-full bg-accent text-accent-text">
                   <Mic className="size-4" />
@@ -557,7 +557,7 @@ export function BuildPreview({
             {frame}
 
             {/* AI status strip, mobile and tablet */}
-            <div className="overflow-hidden rounded-card border border-border bg-surface shadow-card lg:hidden">
+            <div className="glass overflow-hidden rounded-card lg:hidden">
               <ProgressLine progress={progress} />
               <div className="flex h-14 items-center gap-3 px-4">
                 {done ? (

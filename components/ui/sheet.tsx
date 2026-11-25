@@ -19,10 +19,10 @@ function SheetContent({
 }: React.ComponentProps<typeof DialogPrimitive.Content>) {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-ink/40 backdrop-blur-sm data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
+      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
       <DialogPrimitive.Content
         className={cn(
-          "fixed z-50 flex flex-col gap-6 bg-surface-raised p-8 shadow-pop",
+          "fixed z-50 flex flex-col gap-6 border border-border bg-surface-raised p-8 shadow-pop backdrop-blur-2xl",
           "inset-x-0 bottom-0 max-h-[85dvh] rounded-t-dialog",
           "data-[state=closed]:animate-sheet-out-bottom data-[state=open]:animate-sheet-in-bottom",
           "md:inset-y-0 md:right-0 md:left-auto md:max-h-none md:w-[400px] md:rounded-none md:rounded-l-dialog",

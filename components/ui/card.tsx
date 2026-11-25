@@ -9,9 +9,9 @@ function Card({
   return (
     <div
       className={cn(
-        "rounded-card border border-border bg-surface p-8 shadow-card",
+        "glass rounded-card p-8",
         interactive &&
-          "transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong hover:shadow-pop",
+          "transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-1 hover:border-border-strong hover:shadow-pop",
         className,
       )}
       {...props}

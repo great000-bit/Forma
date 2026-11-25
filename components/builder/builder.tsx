@@ -70,8 +70,9 @@ export function Builder({ start }: { start?: { niche: string; templateId: string
   if (!state) return <div className="min-h-dvh" />;
 
   return (
-    <div id="main" className="min-h-dvh bg-bg">
-      <header className="flex h-16 items-center justify-between border-b border-border px-6">
+    <div id="main" className="relative isolate min-h-dvh bg-bg">
+      <div className="signal-glow pointer-events-none fixed inset-x-0 top-0 -z-10 h-[560px]" aria-hidden="true" />
+      <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-black/60 px-6 backdrop-blur-2xl">
         <Link href="/" aria-label="Forma home"><Logo /></Link>
         {state.stage !== "niche" ? (
           <Button variant="ghost" size="sm" onClick={restart}>Start over and delete answers</Button>

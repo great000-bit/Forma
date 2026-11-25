@@ -8,7 +8,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border">
+    <footer className="relative border-t border-border bg-black">
       <Container className="flex flex-col gap-12 py-12 md:py-16">
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-start">
           <div className="max-w-[320px]">
@@ -24,12 +24,12 @@ export function Footer() {
               <ul className="mt-4 flex flex-col gap-3">
                 {siteConfig.nav.map((item) => (
                   <li key={item.href}>
-                    <a
+                    <Link
                       href={item.href}
                       className="rounded-chip text-body-sm text-text-soft transition-colors duration-150 ease-out hover:text-text"
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

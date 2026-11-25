@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export const fieldBase = [
-  "h-12 w-full rounded-control border border-border bg-surface px-4 text-body text-text",
+  "h-12 w-full rounded-control border border-border bg-surface px-4 text-body text-text shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
   "placeholder:text-text-muted transition-colors duration-150 ease-out",
   "hover:border-border-strong focus-visible:border-accent",
   "aria-invalid:border-error disabled:cursor-not-allowed disabled:opacity-50",

@@ -224,7 +224,7 @@ export function BuildView({ niche, answers, initial, preferredTemplate, initialS
 
   return (
     <div className="mx-auto grid w-full max-w-[1440px] gap-6 px-4 py-6 lg:grid-cols-[380px_minmax(0,1fr)] lg:px-6">
-      <aside className="relative flex flex-col gap-6 overflow-hidden rounded-card border border-border bg-surface p-6 shadow-card lg:sticky lg:top-6 lg:max-h-[calc(100dvh-48px)] lg:self-start lg:p-8">
+      <aside className="relative flex flex-col gap-6 overflow-hidden glass rounded-card p-6 lg:sticky lg:top-6 lg:max-h-[calc(100dvh-48px)] lg:self-start lg:p-8">
         <div className="absolute inset-x-0 top-0 h-0.5 bg-border" aria-hidden="true">
           <motion.div className="h-full origin-left bg-accent" animate={{ scaleX: done / SECTION_IDS.length }} transition={{ duration: 0.8, ease }} />
         </div>
@@ -314,8 +314,8 @@ export function BuildView({ niche, answers, initial, preferredTemplate, initialS
         ) : null}
       </aside>
 
-      <div className="overflow-hidden rounded-card border border-border bg-surface shadow-pop">
-        <div className="flex h-11 items-center gap-2 border-b border-border bg-bg px-4" aria-hidden="true">
+      <div className="glass overflow-hidden rounded-card">
+        <div className="flex h-11 items-center gap-2 border-b border-border bg-black/40 px-4" aria-hidden="true">
           <span className="size-2.5 rounded-full bg-border-strong" />
           <span className="size-2.5 rounded-full bg-border-strong" />
           <span className="size-2.5 rounded-full bg-border-strong" />

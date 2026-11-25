@@ -68,7 +68,7 @@ export function PortfolioView({
   const style = { "--pf-accent": accent, "--pf-on-accent": onAccent(accent) } as CSSProperties;
   const rootClass = cn(
     "bg-bg text-text-soft",
-    theme.mode === "dark" && "dark",
+    theme.mode === "dark" ? "dark" : "light",
     fontClass[theme.font],
     className,
   );

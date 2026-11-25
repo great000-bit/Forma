@@ -7,7 +7,41 @@
   Semantic tokens (docs/DESIGN_SYSTEM.md, section 2.4).
   Components use these through Tailwind utilities, never raw hex.
 */
-:root {
+:root,
+.dark {
+  /* Forma app: pure black canvas, electric blue, glass surfaces. */
+  --bg: #000000;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-raised: rgba(12, 14, 24, 0.86);
+  --text: #ffffff;
+  --text-soft: rgba(255, 255, 255, 0.72);
+  --text-muted: rgba(255, 255, 255, 0.52);
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --accent: #2f6bff;
+  --accent-hover: #4a80ff;
+  --accent-pressed: #1f56e6;
+  --accent-soft: rgba(47, 107, 255, 0.16);
+  --accent-text: #ffffff;
+  --success: #34c48a;
+  --warning: #e0a73a;
+  --error: #ef6a6a;
+
+  --signal: #2f6bff;
+
+  --elev-sm: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --elev-card: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 64px -24px rgba(0, 0, 0, 0.9);
+  --elev-pop: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 0 1px rgba(47, 107, 255, 0.18),
+    0 24px 72px -16px rgba(47, 107, 255, 0.28);
+
+  --skeleton: rgba(255, 255, 255, 0.06);
+  --skeleton-shine: rgba(255, 255, 255, 0.06);
+
+  color-scheme: dark;
+}
+
+/* Light portfolios (a user's own site in light mode) set this on their root. */
+.light {
   --bg: #f7f6f3;
   --surface: #ffffff;
   --surface-raised: #ffffff;
@@ -16,17 +50,14 @@
   --text-muted: #6b6b76;
   --border: #e7e5e0;
   --border-strong: #d3d0c9;
-  --accent: #5b4dff;
-  --accent-hover: #4a3be6;
-  --accent-pressed: #3b2dc4;
-  --accent-soft: #f0eeff;
+  --accent: #2f6bff;
+  --accent-hover: #1f56e6;
+  --accent-pressed: #1a48c2;
+  --accent-soft: #eaf0ff;
   --accent-text: #ffffff;
   --success: #1f9d6b;
   --warning: #c98a1b;
   --error: #d64545;
-
-  /* Brand Signal never changes with the theme (logo rule) */
-  --signal: #5b4dff;
 
   --elev-sm: 0 1px 2px rgba(14, 14, 16, 0.04);
   --elev-card: 0 1px 2px rgba(14, 14, 16, 0.04), 0 12px 32px -12px rgba(14, 14, 16, 0.1);
@@ -36,33 +67,6 @@
   --skeleton-shine: rgba(255, 255, 255, 0.6);
 
   color-scheme: light;
-}
-
-.dark {
-  --bg: #0e0e10;
-  --surface: #17171a;
-  --surface-raised: #1f1f23;
-  --text: #f7f6f3;
-  --text-soft: #c4c4cc;
-  --text-muted: #8e8e99;
-  --border: #26262b;
-  --border-strong: #3a3a41;
-  --accent: #7a6eff;
-  --accent-hover: #8e84ff;
-  --accent-pressed: #6a5ef5;
-  --accent-soft: #1e1a4d;
-  --success: #34c48a;
-  --warning: #e0a73a;
-  --error: #ef6a6a;
-
-  --elev-sm: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  --elev-card: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  --elev-pop: 0 24px 56px -16px rgba(0, 0, 0, 0.6);
-
-  --skeleton: #1f1f23;
-  --skeleton-shine: rgba(255, 255, 255, 0.04);
-
-  color-scheme: dark;
 }
 
 @theme inline {
@@ -80,7 +84,7 @@
   --color-accent-soft: var(--accent-soft);
   --color-accent-text: var(--accent-text);
   --color-signal: var(--signal);
-  --color-ink: #0e0e10;
+  --color-ink: #000000;
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
@@ -243,8 +247,8 @@
   }
 
   ::selection {
-    background: var(--accent-soft);
-    color: var(--text);
+    background: rgba(47, 107, 255, 0.45);
+    color: #ffffff;
   }
 }
 
@@ -265,13 +269,110 @@
     animation: shimmer 1.6s ease-in-out infinite;
   }
 
-  /* The one allowed glow: radial Signal, under 12% opacity */
+  /* Soft blue light from above, used behind hero and closing sections */
   .signal-glow {
     background: radial-gradient(
       ellipse 60% 55% at 50% 0%,
-      color-mix(in srgb, var(--accent) 11%, transparent),
+      color-mix(in srgb, var(--accent) 22%, transparent),
       transparent 70%
     );
+  }
+
+  /* Glass card: frosted, thin light edge, deep shadow. */
+  .glass {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 30px 80px -30px rgba(0, 0, 0, 0.9);
+  }
+  .light .glass {
+    background: #ffffff;
+    border-color: var(--border);
+    backdrop-filter: none;
+    box-shadow: var(--elev-card);
+  }
+
+  /* Blue edge light for the one focal element in a view */
+  .glow-edge {
+    box-shadow:
+      0 0 0 1px rgba(110, 155, 255, 0.55),
+      inset 0 0 24px rgba(47, 107, 255, 0.25),
+      0 0 32px rgba(47, 107, 255, 0.45),
+      0 0 96px rgba(47, 107, 255, 0.25);
+  }
+
+  /* Framed stage: black panel with a blue aura rising from the bottom */
+  .stage {
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 115%, rgba(47, 107, 255, 0.55), transparent 70%),
+      radial-gradient(ellipse 40% 35% at 50% 100%, rgba(120, 160, 255, 0.35), transparent 70%),
+      #000;
+  }
+
+  /* Fine grid that fades out, for section backdrops */
+  .grid-fade {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+  }
+
+  /* Endless horizontal rows; pause on hover, stop for reduced motion */
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee var(--marquee-speed, 60s) linear infinite;
+  }
+  .marquee[data-reverse] {
+    animation-direction: reverse;
+  }
+  .marquee:hover {
+    animation-play-state: paused;
+  }
+
+  /* Light sweep across a focal edge */
+  .sweep {
+    position: relative;
+    overflow: hidden;
+  }
+  .sweep::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(110deg, transparent 35%, rgba(140, 175, 255, 0.18) 50%, transparent 65%);
+    transform: translateX(-100%);
+    animation: sweep 4.5s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    pointer-events: none;
+  }
+}
+
+/* First-paint entrance for hero lines: rise and un-blur, no opacity gap for LCP. */
+.hero-in {
+  animation: hero-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes hero-in {
+  from {
+    transform: translateY(16px);
+    filter: blur(10px);
+    opacity: 0.001;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes sweep {
+  60%,
+  100% {
+    transform: translateX(100%);
   }
 }
 
@@ -284,6 +385,11 @@
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .marquee,
+  .hero-in,
+  .sweep::after {
+    animation: none !important;
   }
   *,
   *::before,
