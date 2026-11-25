@@ -31,4 +31,9 @@ Do not build Phase 11 or 12 features early. Prepare only the SEO data model hook
 - **Phase 2:** auth (email/password, Google), proxy session refresh, dashboard shell, saved portfolios (migration 0002). Needs Supabase env vars in Vercel and the Google provider enabled in Supabase.
 - **Phases 3 to 5 (partial):** AI interview, live builder, AI edits, template engine (5 presets, full UI/UX catalog). Needs `ANTHROPIC_API_KEY` in Vercel; `/api/ai/health` reports the setup.
 - **Research:** see `docs/research/niches.md` for which niches still need verified portfolio lists.
-- **Not started:** manual editor UI (5), publishing and subdomains (6), remaining template catalogs (7), domains (8), payments (9), analytics/admin (10).
+- **Phase 5:** manual editor done (sections, design panel, undo, AI command bar, autosave).
+- **Phase 6:** publish to /p/<name> or <name>.<PORTFOLIO_ROOT_DOMAIN>, share dialog, QR, JSON-LD (migration 0003).
+- **Phase 7:** 520 templates (20 per niche) generated from docs/research by scripts/build-template-library.mjs; /templates gallery and previews.
+- **Redesign (25 Nov):** black and blue, glass surfaces, scroll-linked hero stage. App is dark-only; light portfolios use a .light root.
+- **Phase 8:** custom domains (migration 0004). Connect in the share dialog; DNS helper with live checks. Needs VERCEL_API_TOKEN and VERCEL_PROJECT_ID to attach domains for HTTPS. Pro-only gate arrives with payments (Phase 9).
+- **Not started:** payments (9), analytics/admin (10).

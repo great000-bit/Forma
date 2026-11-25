@@ -1,11 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { isAppHost } from "@/lib/domains/hostname";
+import { siteConfig } from "@/lib/site";
 
 type CookieToSet = { name: string; value: string; options: CookieOptions };
 
 /**
  * Next.js 16 proxy (formerly middleware).
  * 1. Subdomains: amara.<PORTFOLIO_ROOT_DOMAIN> serves /p/amara.
+ *    Custom domains: amara.com serves /d/amara.com.
  * 2. Auth: refreshes the Supabase session on app routes and keeps
  *    signed-out visitors out of /dashboard and /editor.
  */
@@ -25,6 +28,13 @@ export async function proxy(request: NextRequest) {
       url.pathname = path === "/" ? `/p/${sub}` : `/p/${sub}${path}`;
       return NextResponse.rewrite(url);
     }
+  }
+
+  // 1b. Custom domains. Anything that isn't one of Forma's own hosts.
+  if (!isAppHost(host, siteConfig.url, root)) {
+    const url = request.nextUrl.clone();
+    url.pathname = path === "/" ? `/d/${host}` : `/d/${host}${path}`;
+    return NextResponse.rewrite(url);
   }
 
   if (!APP_PREFIXES.some((p) => path.startsWith(p))) return NextResponse.next();

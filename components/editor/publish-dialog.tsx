@@ -7,6 +7,7 @@ import { Check, Copy, ExternalLink, MessageCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { slugify, slugProblem } from "@/lib/portfolio/slug";
+import { DomainPanel } from "@/components/editor/domain-panel";
 
 /** Publish flow: pick a link name, publish, then share (copy, WhatsApp, QR). */
 export function PublishDialog({ id, name, published }: { id: string; name: string; published: { slug: string; url: string } | null }) {
@@ -76,7 +77,7 @@ export function PublishDialog({ id, name, published }: { id: string; name: strin
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-fade-in" />
-        <Dialog.Content className="fixed top-1/2 left-1/2 z-50 w-[calc(100%-32px)] max-w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-dialog border border-border bg-surface-raised backdrop-blur-2xl p-8 shadow-pop data-[state=open]:animate-fade-in">
+        <Dialog.Content className="fixed top-1/2 left-1/2 z-50 w-[calc(100%-32px)] max-h-[calc(100dvh-32px)] max-w-[480px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-dialog border border-border bg-surface-raised backdrop-blur-2xl p-8 shadow-pop data-[state=open]:animate-fade-in">
           <Dialog.Close className="absolute top-5 right-5 inline-flex size-11 items-center justify-center rounded-control text-text-muted hover:bg-accent-soft hover:text-text" aria-label="Close">
             <X className="size-5" aria-hidden="true" />
           </Dialog.Close>
@@ -118,6 +119,9 @@ export function PublishDialog({ id, name, published }: { id: string; name: strin
                   <a href={qr} download={`${live.slug}-qr.png`} className="text-label text-accent hover:underline">Download QR code</a>
                 </div>
               ) : null}
+              <div className="mt-6 border-t border-border pt-6">
+                <DomainPanel id={id} />
+              </div>
               <button type="button" onClick={() => void unpublish()} disabled={busy} className="mt-6 w-full text-center text-body-sm text-text-muted hover:text-error">
                 Unpublish
               </button>
