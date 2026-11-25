@@ -58,7 +58,7 @@ export function Builder() {
   if (!state) return <div className="min-h-dvh" />;
 
   return (
-    <div className="min-h-dvh bg-bg">
+    <div id="main" className="min-h-dvh bg-bg">
       <header className="flex h-16 items-center justify-between border-b border-border px-6">
         <Link href="/" aria-label="Forma home"><Logo /></Link>
         {state.stage !== "niche" ? (
