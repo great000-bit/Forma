@@ -26,7 +26,9 @@ Do not build Phase 11 or 12 features early. Prepare only the SEO data model hook
 
 ## Status (25 Nov 2026)
 
-- **Phase 1:** code complete and pushed. Lint, type check and build have not run yet (no package installs in the authoring environment).
-- **Research:** all 26 niches have required interview sections and 20 template concepts. Verified 20-portfolio lists exist for 13 niches; the rest are marked in `docs/research/niches.md`.
-- **Phases 3 to 5 (partial, built early on request):** AI interview (voice + chat), AI builder with live build, AI edit agent, template engine with 5 presets and the full UI/UX catalog. Progress is kept in the browser tab until Phase 2 (accounts) adds storage.
-- **Not started:** auth and dashboard (2), manual editor UI (5), publishing and subdomains (6), remaining template catalogs (7), domains (8), payments (9), analytics/admin (10).
+- **CI:** GitHub Actions runs install, type check, lint, tests and build on every push (`.github/workflows/ci.yml`). Green as of commit d63af78.
+- **Phase 1:** done and live on Vercel. Waitlist needs Supabase env vars and migration 0001.
+- **Phase 2:** auth (email/password, Google), proxy session refresh, dashboard shell, saved portfolios (migration 0002). Needs Supabase env vars in Vercel and the Google provider enabled in Supabase.
+- **Phases 3 to 5 (partial):** AI interview, live builder, AI edits, template engine (5 presets, full UI/UX catalog). Needs `ANTHROPIC_API_KEY` in Vercel; `/api/ai/health` reports the setup.
+- **Research:** see `docs/research/niches.md` for which niches still need verified portfolio lists.
+- **Not started:** manual editor UI (5), publishing and subdomains (6), remaining template catalogs (7), domains (8), payments (9), analytics/admin (10).
