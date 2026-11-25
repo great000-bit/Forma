@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { aiConfigured, callClaude, extractJson, MODELS } from "@/lib/ai/claude";
+import { aiConfigured, callModel, extractJson, MODELS } from "@/lib/ai/llm";
 import { editRequestSchema } from "@/lib/ai/contracts";
 import { editPrompt } from "@/lib/ai/prompts";
 import { applyOps, opsSchema, OpError } from "@/lib/portfolio/ops";
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const text = await callClaude({ model: MODELS.fast, ...editPrompt(json, instruction, lastError), maxTokens: 2000 });
+      const text = await callModel({ model: MODELS.fast, ...editPrompt(json, instruction, lastError), maxTokens: 2000, json: true });
       const reply = modelReply.safeParse(extractJson(text));
       if (!reply.success) {
         lastError = "Reply was not in the required JSON shape";

@@ -32,12 +32,12 @@ Import the repo, set `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL` and `NEX
 
 ## AI builder (`/builder`)
 
-Set `ANTHROPIC_API_KEY` in `.env.local`, then open `/builder`.
+Set `AI_PROVIDER` and `GEMINI_API_KEY` (or `ANTHROPIC_API_KEY`) in `.env.local` or Vercel, then open `/builder`. `/api/ai/health` checks the setup. Switching providers needs no code change.
 
 - **Interview agent** (`/api/ai/interview`): one question at a time, adapts to answers, covers the niche's required topics (`lib/portfolio/niche-config.ts`). Voice via the Web Speech API with a typing fallback. Falls back to fixed questions if the AI is down or not configured.
 - **Builder agent** (`/api/ai/build`): streams the portfolio section by section as NDJSON, validates every section with Zod, retries missing sections once, and leaves anything still invalid empty.
 - **Edit agent** (`/api/ai/edit`): returns only a diff (ops). The server checks the ops produce a valid portfolio before replying; the client applies the same ops, with undo.
-- All AI calls are server-side; the key never reaches the browser. Rate limits are in-memory for now (per instance).
+- All AI calls go through `lib/ai/llm.ts` (Gemini or Claude over fetch), server-side only; keys never reach the browser. Rate limits are in-memory for now (per instance).
 
 ## Template engine
 

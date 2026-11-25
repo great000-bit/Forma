@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { aiConfigured, callClaude, extractJson, MODELS } from "@/lib/ai/claude";
+import { aiConfigured, callModel, extractJson, MODELS } from "@/lib/ai/llm";
 import {
   interviewModelSchema,
   interviewRequestSchema,
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
   // One try, one retry, then the deterministic fallback.
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const text = await callClaude({ model: MODELS.fast, ...prompt, maxTokens: 300 });
+      const text = await callModel({ model: MODELS.fast, ...prompt, maxTokens: 300, json: true });
       const result = interviewModelSchema.safeParse(extractJson(text));
       if (!result.success) continue;
       const { next } = result.data;

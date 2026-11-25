@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { aiConfigured, callClaude, MODELS } from "@/lib/ai/claude";
+import { aiConfigured, aiProvider, callModel, MODELS } from "@/lib/ai/llm";
 import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
@@ -13,13 +13,13 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Try again in a few minutes." }, { status: 429 });
   }
   if (!aiConfigured()) {
-    return NextResponse.json({ configured: false, hint: "Set ANTHROPIC_API_KEY in Vercel, then redeploy." });
+    return NextResponse.json({ configured: false, hint: "Set GEMINI_API_KEY (or ANTHROPIC_API_KEY) in Vercel, then redeploy." });
   }
 
   const check = async (model: string) => {
     const started = Date.now();
     try {
-      await callClaude({ model, system: "Reply with OK.", messages: [{ role: "user", content: "ping" }], maxTokens: 5 });
+      await callModel({ model, system: "Reply with OK.", messages: [{ role: "user", content: "ping" }], maxTokens: 5 });
       return { model, ok: true, ms: Date.now() - started };
     } catch (error) {
       return { model, ok: false, ms: Date.now() - started, error: error instanceof Error ? error.message.slice(0, 200) : "Unknown error" };
@@ -27,5 +27,5 @@ export async function GET(request: Request) {
   };
 
   const [fast, build] = await Promise.all([check(MODELS.fast), check(MODELS.build)]);
-  return NextResponse.json({ configured: true, fast, build });
+  return NextResponse.json({ configured: true, provider: aiProvider(), fast, build });
 }
