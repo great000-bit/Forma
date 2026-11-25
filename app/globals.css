@@ -1,0 +1,295 @@
+@import "tailwindcss";
+
+/* Class-based dark mode, driven by next-themes */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Semantic tokens (docs/DESIGN_SYSTEM.md, section 2.4).
+  Components use these through Tailwind utilities, never raw hex.
+*/
+:root {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --text: #0e0e10;
+  --text-soft: #4a4a52;
+  --text-muted: #6b6b76;
+  --border: #e7e5e0;
+  --border-strong: #d3d0c9;
+  --accent: #5b4dff;
+  --accent-hover: #4a3be6;
+  --accent-pressed: #3b2dc4;
+  --accent-soft: #f0eeff;
+  --accent-text: #ffffff;
+  --success: #1f9d6b;
+  --warning: #c98a1b;
+  --error: #d64545;
+
+  /* Brand Signal never changes with the theme (logo rule) */
+  --signal: #5b4dff;
+
+  --elev-sm: 0 1px 2px rgba(14, 14, 16, 0.04);
+  --elev-card: 0 1px 2px rgba(14, 14, 16, 0.04), 0 12px 32px -12px rgba(14, 14, 16, 0.1);
+  --elev-pop: 0 2px 4px rgba(14, 14, 16, 0.04), 0 24px 56px -16px rgba(14, 14, 16, 0.18);
+
+  --skeleton: #efede8;
+  --skeleton-shine: rgba(255, 255, 255, 0.6);
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0e0e10;
+  --surface: #17171a;
+  --surface-raised: #1f1f23;
+  --text: #f7f6f3;
+  --text-soft: #c4c4cc;
+  --text-muted: #8e8e99;
+  --border: #26262b;
+  --border-strong: #3a3a41;
+  --accent: #7a6eff;
+  --accent-hover: #8e84ff;
+  --accent-pressed: #6a5ef5;
+  --accent-soft: #1e1a4d;
+  --success: #34c48a;
+  --warning: #e0a73a;
+  --error: #ef6a6a;
+
+  --elev-sm: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --elev-card: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --elev-pop: 0 24px 56px -16px rgba(0, 0, 0, 0.6);
+
+  --skeleton: #1f1f23;
+  --skeleton-shine: rgba(255, 255, 255, 0.04);
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-text: var(--text);
+  --color-text-soft: var(--text-soft);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-pressed: var(--accent-pressed);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-signal: var(--signal);
+  --color-ink: #0e0e10;
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --radius-chip: 8px;
+  --radius-control: 12px;
+  --radius-card: 20px;
+  --radius-dialog: 24px;
+
+  --shadow-sm: var(--elev-sm);
+  --shadow-card: var(--elev-card);
+  --shadow-pop: var(--elev-pop);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --container-page: 1200px;
+  --container-prose: 720px;
+
+  /* Type scale (section 3.2). "-m" variants are the mobile sizes. */
+  --text-display-xl: 4.5rem;
+  --text-display-xl--line-height: 4.5rem;
+  --text-display-xl--letter-spacing: -0.03em;
+  --text-display-xl--font-weight: 600;
+  --text-display-xl-m: 2.75rem;
+  --text-display-xl-m--line-height: 2.875rem;
+  --text-display-xl-m--letter-spacing: -0.03em;
+  --text-display-xl-m--font-weight: 600;
+  --text-display: 3.5rem;
+  --text-display--line-height: 3.625rem;
+  --text-display--letter-spacing: -0.025em;
+  --text-display--font-weight: 600;
+  --text-display-m: 2.375rem;
+  --text-display-m--line-height: 2.625rem;
+  --text-display-m--letter-spacing: -0.025em;
+  --text-display-m--font-weight: 600;
+  --text-h1: 2.75rem;
+  --text-h1--line-height: 3rem;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h1--font-weight: 600;
+  --text-h1-m: 2.125rem;
+  --text-h1-m--line-height: 2.375rem;
+  --text-h1-m--letter-spacing: -0.02em;
+  --text-h1-m--font-weight: 600;
+  --text-h2: 2rem;
+  --text-h2--line-height: 2.375rem;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h2--font-weight: 600;
+  --text-h2-m: 1.75rem;
+  --text-h2-m--line-height: 2.125rem;
+  --text-h2-m--letter-spacing: -0.015em;
+  --text-h2-m--font-weight: 600;
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.875rem;
+  --text-h3--letter-spacing: -0.01em;
+  --text-h3--font-weight: 600;
+  --text-h3-m: 1.375rem;
+  --text-h3-m--line-height: 1.75rem;
+  --text-h3-m--letter-spacing: -0.01em;
+  --text-h3-m--font-weight: 600;
+  --text-h4: 1.25rem;
+  --text-h4--line-height: 1.75rem;
+  --text-h4--letter-spacing: -0.005em;
+  --text-h4--font-weight: 500;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.875rem;
+  --text-body: 1rem;
+  --text-body--line-height: 1.625rem;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.375rem;
+  --text-label: 0.875rem;
+  --text-label--line-height: 1.25rem;
+  --text-label--font-weight: 500;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+  --text-caption--letter-spacing: 0.02em;
+  --text-caption--font-weight: 500;
+
+  --animate-fade-in: fade-in 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-fade-out: fade-out 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-sheet-in-bottom: sheet-in-bottom 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-sheet-out-bottom: sheet-out-bottom 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-sheet-in-right: sheet-in-right 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-sheet-out-right: sheet-out-right 200ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes sheet-in-bottom {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes sheet-out-bottom {
+    to {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes sheet-in-right {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes sheet-out-right {
+    to {
+      transform: translateX(100%);
+    }
+  }
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    background: var(--bg);
+    color: var(--text-soft);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.625;
+    text-wrap: pretty;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    color: var(--text);
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+  }
+
+  :focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--text);
+  }
+}
+
+@layer components {
+  /* Loading placeholder with a slow shimmer (section 6, Skeleton) */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-chip);
+    background: var(--skeleton);
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, var(--skeleton-shine), transparent);
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+
+  /* The one allowed glow: radial Signal, under 12% opacity */
+  .signal-glow {
+    background: radial-gradient(
+      ellipse 60% 55% at 50% 0%,
+      color-mix(in srgb, var(--accent) 11%, transparent),
+      transparent 70%
+    );
+  }
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
