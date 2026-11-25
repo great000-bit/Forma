@@ -298,7 +298,13 @@ export function BuildView({ niche, answers, initial, initialSavedId, onPortfolio
                   )}
                 </p>
               ) : null}
-              <p className="text-body-sm text-text-muted">Manual editing and publishing to your own link come next.</p>
+              {savedId ? (
+                <Button asChild variant="secondary">
+                  <a href={`/editor/${savedId}`}>Open the editor</a>
+                </Button>
+              ) : (
+                <p className="text-body-sm text-text-muted">Save to keep editing by hand and publish later.</p>
+              )}
             </div>
           </div>
         ) : null}

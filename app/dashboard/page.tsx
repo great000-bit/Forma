@@ -59,7 +59,11 @@ export default async function DashboardPage() {
               <p className="text-caption text-text-muted tabular-nums">
                 Updated {new Date(row.updated_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
               </p>
-              <p className="text-body-sm text-text-soft">Editing and publishing to your own link come next.</p>
+              <div className="flex gap-3">
+                <Button asChild size="sm">
+                  <Link href={`/editor/${row.id}`}>Edit</Link>
+                </Button>
+              </div>
             </Card>
           );
         })}
