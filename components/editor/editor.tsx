@@ -17,6 +17,7 @@ import {
   Trash2,
   Undo2,
 } from "lucide-react";
+import { PublishDialog } from "@/components/editor/publish-dialog";
 import { PortfolioView } from "@/components/portfolio/portfolio-view";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,7 +79,7 @@ const list = (s: string) => s.split(",").map((x) => x.trim()).filter(Boolean);
 
 // ---------- editor ----------
 
-export function Editor({ id, initial }: { id: string; initial: Portfolio }) {
+export function Editor({ id, initial, published }: { id: string; initial: Portfolio; published: { slug: string; url: string } | null }) {
   const [draft, setDraft] = useState<Portfolio>(initial);
   const [past, setPast] = useState<Portfolio[]>([]);
   const [future, setFuture] = useState<Portfolio[]>([]);
@@ -243,7 +244,7 @@ export function Editor({ id, initial }: { id: string; initial: Portfolio }) {
         <span className={cn("hidden max-w-[220px] truncate text-body-sm md:block", save === "error" || save === "invalid" ? "text-error" : "text-text-muted")} aria-live="polite">
           {saveLabel}
         </span>
-        <Button disabled title="Publishing arrives in the next phase">Publish</Button>
+        <PublishDialog id={id} name={draft.sections.profile.name} published={published} />
       </header>
       {aiNote ? <p className="border-b border-border bg-accent-soft px-4 py-2 text-center text-body-sm text-text" aria-live="polite">{aiNote}</p> : null}
 

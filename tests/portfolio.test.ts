@@ -92,3 +92,22 @@ describe("accent guardrail", () => {
     expect(contrastRatio("#000000", "#FFFFFF")).toBeCloseTo(21, 0);
   });
 });
+
+import { portfolioUrl, slugify, slugProblem } from "@/lib/portfolio/slug";
+
+describe("slugs", () => {
+  it("slugifies names", () => {
+    expect(slugify("Amara Okafor")).toBe("amara-okafor");
+    expect(slugify("  Émeka  Nwosu!! ")).toBe("emeka-nwosu");
+  });
+  it("rejects bad and reserved slugs", () => {
+    expect(slugProblem("ab")).toBe("Use at least 3 characters");
+    expect(slugProblem("admin")).toBe("That name is reserved. Try another");
+    expect(slugProblem("-bad")).toBe("Use lowercase letters, numbers and dashes");
+    expect(slugProblem("amara")).toBeNull();
+  });
+  it("builds subdomain or path URLs", () => {
+    expect(portfolioUrl("amara", "https://x.vercel.app", "forma.app")).toBe("https://amara.forma.app");
+    expect(portfolioUrl("amara", "https://x.vercel.app/")).toBe("https://x.vercel.app/p/amara");
+  });
+});
