@@ -38,15 +38,17 @@ export async function POST(request: Request) {
     return reply({ done: next === null, next, niche: null, source: "fallback" });
   };
 
-  if (!aiConfigured()) return fallbackReply();
+  // The opener is fixed, so the first question shows instantly.
+  if (!aiConfigured() || answers.length === 0) return fallbackReply();
 
   const prompt = interviewPrompt(topics, answers, Boolean(parsed.data.niche));
   const asked = new Set(answers.map((a) => a.question.toLowerCase()));
 
-  // One try, one retry, then the deterministic fallback.
-  for (let attempt = 0; attempt < 2; attempt++) {
+  // One quick try, then the deterministic fallback. Never keep people waiting.
+  const timeout = (ms: number) => new Promise<never>((_, rej) => setTimeout(() => rej(new Error("timeout")), ms));
+  for (let attempt = 0; attempt < 1; attempt++) {
     try {
-      const text = await callModel({ model: MODELS.fast, ...prompt, maxTokens: 300, json: true });
+      const text = await Promise.race([callModel({ model: MODELS.fast, ...prompt, maxTokens: 300, json: true }), timeout(6000)]);
       const result = interviewModelSchema.safeParse(extractJson(text));
       if (!result.success) continue;
       const { next } = result.data;

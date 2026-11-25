@@ -57,9 +57,15 @@ export function Footer() {
           </nav>
         </div>
 
-        <p className="text-caption text-text-muted">
-          © {year} {siteConfig.name}. All rights reserved.
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-4 text-caption text-text-muted">
+          <p>
+            © {year} {siteConfig.name}. All rights reserved.
+          </p>
+          <div className="flex gap-6">
+            <Link href="/privacy" className="hover:text-text">Privacy</Link>
+            <Link href="/terms" className="hover:text-text">Terms</Link>
+          </div>
+        </div>
       </Container>
     </footer>
   );
