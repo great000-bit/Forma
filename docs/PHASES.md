@@ -38,3 +38,4 @@ Do not build Phase 11 or 12 features early. Prepare only the SEO data model hook
 - **Phase 8:** custom domains (migration 0004). Connect in the share dialog; DNS helper with live checks. Needs VERCEL_API_TOKEN and VERCEL_PROJECT_ID to attach domains for HTTPS. Pro-only gate arrives with payments (Phase 9).
 - **Phase 9:** Paystack billing built (migration 0005, docs/PRICING.md). Prices are a proposal awaiting sign-off; Pro gates switch on once Paystack keys are set.
 - **Phase 10 (part 1):** private view counts per portfolio and source (migration 0006), shown on the dashboard. Admin panel next.
+- **Phase 10 (part 2):** founder /admin page (ADMIN_EMAILS env, service-role totals, waitlist, niches).
