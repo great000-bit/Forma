@@ -12,11 +12,11 @@ import { WAITLIST_NICHE_OPTIONS } from "@/lib/niches";
 import type { Portfolio } from "@/lib/portfolio/schema";
 
 type Stage = "niche" | "interview" | "build";
-type Saved = { stage: Stage; niche: string | null; answers: Answer[]; portfolio: Portfolio | null };
+type Saved = { stage: Stage; niche: string | null; answers: Answer[]; portfolio: Portfolio | null; savedId: string | null };
 
 // Until accounts land (Phase 2), progress lives in this browser tab only.
 const KEY = "forma.builder.v1";
-const blank: Saved = { stage: "niche", niche: null, answers: [], portfolio: null };
+const blank: Saved = { stage: "niche", niche: null, answers: [], portfolio: null, savedId: null };
 
 function load(): Saved {
   try {
@@ -96,7 +96,9 @@ export function Builder() {
           niche={state.niche ?? "other"}
           answers={state.answers}
           initial={state.portfolio}
+          initialSavedId={state.savedId}
           onPortfolio={(portfolio) => patch({ portfolio })}
+          onSaved={(savedId) => patch({ savedId })}
           onRestart={restart}
         />
       ) : null}

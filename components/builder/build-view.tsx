@@ -56,11 +56,13 @@ function Skeleton({ id }: { id: SectionId }) {
   );
 }
 
-export function BuildView({ niche, answers, initial, onPortfolio, onRestart }: {
+export function BuildView({ niche, answers, initial, initialSavedId, onPortfolio, onSaved, onRestart }: {
   niche: string;
   answers: Answer[];
   initial: Portfolio | null;
+  initialSavedId: string | null;
   onPortfolio: (p: Portfolio) => void;
+  onSaved: (id: string) => void;
   onRestart: () => void;
 }) {
   const [templateId] = useState(() => initial?.templateId ?? templatesFor(niche)[0]!.id);
@@ -149,6 +151,32 @@ export function BuildView({ niche, answers, initial, onPortfolio, onRestart }: {
       setEditNote(e instanceof Error ? e.message : "That edit didn't work");
     } finally {
       setEditing(false);
+    }
+  };
+
+  const [savedId, setSavedId] = useState<string | null>(initialSavedId);
+  const [saving, setSaving] = useState(false);
+  const [saveNote, setSaveNote] = useState<string | null>(null);
+
+  const save = async () => {
+    setSaving(true);
+    setSaveNote(null);
+    try {
+      const res = await fetch("/api/portfolios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: savedId ?? undefined, portfolio, answers }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { id?: string; error?: string };
+      if (res.status === 401) return setSaveNote("signin");
+      if (!res.ok || !data.id) throw new Error(data.error ?? "Couldn't save right now.");
+      setSavedId(data.id);
+      onSaved(data.id);
+      setSaveNote("Saved to your dashboard.");
+    } catch (e) {
+      setSaveNote(e instanceof Error ? e.message : "Couldn't save right now.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -255,7 +283,23 @@ export function BuildView({ niche, answers, initial, onPortfolio, onRestart }: {
               {editNote ? <p className="text-body-sm text-text-soft" aria-live="polite">{editNote}</p> : null}
             </form>
 
-            <p className="text-body-sm text-text-muted">Manual editing and publishing to your own link come next.</p>
+            <div className="flex flex-col gap-2 border-t border-border pt-4">
+              <Button onClick={() => void save()} loading={saving} variant={savedId ? "secondary" : "primary"}>
+                {savedId ? "Save changes" : "Save to my dashboard"}
+              </Button>
+              {saveNote ? (
+                <p className="text-body-sm text-text-soft" aria-live="polite">
+                  {saveNote === "signin" ? (
+                    <>
+                      <a href="/login?next=/builder" className="font-medium text-accent hover:underline">Sign in</a> to save. Your portfolio stays here while you do.
+                    </>
+                  ) : (
+                    saveNote
+                  )}
+                </p>
+              ) : null}
+              <p className="text-body-sm text-text-muted">Manual editing and publishing to your own link come next.</p>
+            </div>
           </div>
         ) : null}
       </aside>
